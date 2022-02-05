@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 9640dd3158c9ff141a47f491b30ae702
+importerOverride: VX.GPUVectorGraphics.Editor:Voxell.GPUVectorGraphics.Font:FontImporter
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 629c9a55b73b7db4087275fa513e57b4, type: 3}
+  fontFormat: 0
+  sfntVersion: 65536
+  numTables: 25
+  unitsPerEm: 2048
+  offsetByteWidth: 4
+  glyphCount: 4685
+  fontName: TIMESBD

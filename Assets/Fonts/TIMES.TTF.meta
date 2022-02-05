@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 776c653bade0c424fa43881e10447844
+importerOverride: UnityEditor.CoreModule:UnityEditor:TrueTypeFontImporter
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 0f897ddaf2c61d74aa0565065fab0a5b, type: 3}
