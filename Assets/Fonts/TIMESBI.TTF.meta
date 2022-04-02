@@ -1,5 +1,6 @@
 fileFormatVersion: 2
 guid: fd24f8729129048478d5e6c53e909f25
+importerOverride: VX.GPUVectorGraphics.Editor:Voxell.GPUVectorGraphics.Font:FontImporter
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4

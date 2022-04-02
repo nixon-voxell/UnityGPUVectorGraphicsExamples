@@ -1,8 +1,8 @@
-using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Collections;
+using Unity.Jobs;
 using Voxell.GPUVectorGraphics;
 using Voxell.GPUVectorGraphics.Font;
 using Voxell.Inspector;
@@ -35,10 +35,10 @@ public class DelaunayTest : MonoBehaviour
       points[p] = new float2(pos.x, pos.y);
     }
 
-    NativeList<float2> na_points = new NativeList<float2>(pointCount + 4, Allocator.TempJob);
-    NativeList<int> na_triangles = new NativeList<int>(pointCount, Allocator.TempJob);
-    for (int p=0; p < pointCount; p++) na_points.Add(points[p]);
-    DelaunayTriangulation.Triangulate(minRect, maxRect, ref na_points, ref na_triangles);
+    NativeArray<float2> na_points;
+    NativeList<int> na_triangles;
+    JobHandle jobHandle = CDT.Triangulate(minRect, maxRect, in points, out na_points, out na_triangles);
+    jobHandle.Complete();
 
     int vertexCount = na_points.Length;
     NativeArray<float3> na_vertices = new NativeArray<float3>(vertexCount, Allocator.Temp);
@@ -78,11 +78,10 @@ public class DelaunayTest : MonoBehaviour
       if (mesh == null) mesh = new Mesh();
       mesh.Clear();
 
-      int pointCount = points.Count;
-      NativeList<float2> na_points = new NativeList<float2>(pointCount + 4, Allocator.TempJob);
-      NativeList<int> na_triangles = new NativeList<int>(pointCount, Allocator.TempJob);
-      for (int p=0; p < pointCount; p++) na_points.Add(points[p]);
-      DelaunayTriangulation.Triangulate(minRect, maxRect, ref na_points, ref na_triangles);
+      NativeArray<float2> na_points;
+      NativeList<int> na_triangles;
+      JobHandle jobHandle = CDT.Triangulate(minRect, maxRect, points.ToArray(), out na_points, out na_triangles);
+      jobHandle.Complete();
 
       int vertexCount = na_points.Length;
       NativeArray<float3> na_vertices = new NativeArray<float3>(vertexCount, Allocator.Temp);
@@ -101,17 +100,19 @@ public class DelaunayTest : MonoBehaviour
   private void OnDrawGizmos()
   {
     if (mesh == null) return;
+    Gizmos.color = Color.red;
     int[] triangles = mesh.triangles;
     Vector3[] vertices = mesh.vertices;
     int tIdx = highlightTriangle*3;
-    if (tIdx >= triangles.Length || tIdx < 0) return;
 
-    Gizmos.color = Color.red;
-    Gizmos.DrawLine(transform.position + vertices[triangles[tIdx]], transform.position + vertices[triangles[tIdx + 1]]);
-    Gizmos.DrawLine(transform.position + vertices[triangles[tIdx + 1]], transform.position + vertices[triangles[tIdx + 2]]);
-    Gizmos.DrawLine(transform.position + vertices[triangles[tIdx + 2]], transform.position + vertices[triangles[tIdx]]);
+    if (tIdx < triangles.Length && tIdx > 0)
+    {
+      Gizmos.DrawLine(transform.position + vertices[triangles[tIdx]], transform.position + vertices[triangles[tIdx + 1]]);
+      Gizmos.DrawLine(transform.position + vertices[triangles[tIdx + 1]], transform.position + vertices[triangles[tIdx + 2]]);
+      Gizmos.DrawLine(transform.position + vertices[triangles[tIdx + 2]], transform.position + vertices[triangles[tIdx]]);
+    }
 
-    if (highlightVertex >= vertices.Length || highlightVertex < 0) return;
-    Gizmos.DrawSphere(transform.position +  vertices[highlightVertex], 0.02f);
+    if (highlightVertex < vertices.Length && highlightVertex > 0)
+      Gizmos.DrawSphere(transform.position +  vertices[highlightVertex], 0.02f);
   }
 }
