@@ -37,7 +37,10 @@ public class DelaunayTest : MonoBehaviour
 
     NativeArray<float2> na_points;
     NativeList<int> na_triangles;
-    JobHandle jobHandle = CDT.Triangulate(minRect, maxRect, in points, out na_points, out na_triangles);
+    NativeList<CDT.Edge> na_edges;
+    JobHandle jobHandle = CDT.Triangulate(
+      minRect, maxRect, in points, out na_points, out na_triangles, out na_edges
+    );
     jobHandle.Complete();
 
     int vertexCount = na_points.Length;
@@ -51,6 +54,7 @@ public class DelaunayTest : MonoBehaviour
     na_points.Dispose();
     na_triangles.Dispose();
     na_vertices.Dispose();
+    na_edges.Dispose();
   }
 
   [Button]
@@ -80,7 +84,10 @@ public class DelaunayTest : MonoBehaviour
 
       NativeArray<float2> na_points;
       NativeList<int> na_triangles;
-      JobHandle jobHandle = CDT.Triangulate(minRect, maxRect, points.ToArray(), out na_points, out na_triangles);
+      NativeList<CDT.Edge> na_edges;
+      JobHandle jobHandle = CDT.Triangulate(
+        minRect, maxRect, points.ToArray(), out na_points, out na_triangles, out na_edges
+      );
       jobHandle.Complete();
 
       int vertexCount = na_points.Length;
@@ -94,6 +101,7 @@ public class DelaunayTest : MonoBehaviour
       na_points.Dispose();
       na_triangles.Dispose();
       na_vertices.Dispose();
+      na_edges.Dispose();
     }
   }
 
