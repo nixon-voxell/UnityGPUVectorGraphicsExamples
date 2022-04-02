@@ -37,9 +37,8 @@ public class DelaunayTest : MonoBehaviour
 
     NativeArray<float2> na_points;
     NativeList<int> na_triangles;
-    NativeList<CDT.Edge> na_edges;
     JobHandle jobHandle = CDT.Triangulate(
-      minRect, maxRect, in points, out na_points, out na_triangles, out na_edges
+      minRect, maxRect, in points, out na_points, out na_triangles
     );
     jobHandle.Complete();
 
@@ -54,11 +53,10 @@ public class DelaunayTest : MonoBehaviour
     na_points.Dispose();
     na_triangles.Dispose();
     na_vertices.Dispose();
-    na_edges.Dispose();
   }
 
   [Button]
-  private void Test()
+  private void DTTest()
   {
     if (fontCurve == null) return;
     glyphIdx = fontCurve.TryGetGlyhIndex(character);
@@ -84,9 +82,8 @@ public class DelaunayTest : MonoBehaviour
 
       NativeArray<float2> na_points;
       NativeList<int> na_triangles;
-      NativeList<CDT.Edge> na_edges;
       JobHandle jobHandle = CDT.Triangulate(
-        minRect, maxRect, points.ToArray(), out na_points, out na_triangles, out na_edges
+        minRect, maxRect, points.ToArray(), out na_points, out na_triangles
       );
       jobHandle.Complete();
 
@@ -101,7 +98,59 @@ public class DelaunayTest : MonoBehaviour
       na_points.Dispose();
       na_triangles.Dispose();
       na_vertices.Dispose();
-      na_edges.Dispose();
+    }
+  }
+
+  [Button]
+  private void CDTTest()
+  {
+    if (fontCurve == null) return;
+    glyphIdx = fontCurve.TryGetGlyhIndex(character);
+    if (glyphIdx != -1)
+    {
+      Glyph glyph = fontCurve.Glyphs[glyphIdx];
+      int contourCount = glyph.contours.Length;
+      List<float2> points = new List<float2>();
+
+      maxRect = glyph.maxRect;
+      minRect = glyph.minRect;
+      for (int c=0; c < contourCount; c++)
+      {
+        QuadraticContour glyphContour = glyph.contours[c];
+        int segmentCount = glyphContour.segments.Length;
+
+        for (int s=0; s < segmentCount; s++)
+          points.Add(glyphContour.segments[s].p0);
+      }
+
+      if (mesh == null) mesh = new Mesh();
+      mesh.Clear();
+
+      int[] contours = new int[points.Count];
+      for (int c=0; c < contours.Length; c++)
+        contours[c] = c;
+
+      NativeArray<float2> na_points;
+      NativeList<int> na_triangles;
+      NativeArray<int> na_contour;
+      JobHandle jobHandle = CDT.ConstraintTriangulate(
+        minRect, maxRect, points.ToArray(), in contours,
+        out na_points, out na_triangles, out na_contour
+      );
+      jobHandle.Complete();
+
+      int vertexCount = na_points.Length;
+      NativeArray<float3> na_vertices = new NativeArray<float3>(vertexCount, Allocator.Temp);
+      for (int v=0; v < vertexCount; v++) na_vertices[v] = new float3(na_points[v], 0.0f);
+      mesh.SetVertices<float3>(na_vertices);
+      mesh.SetIndices<int>(na_triangles, MeshTopology.Triangles, 0);
+
+      meshFilter.sharedMesh = mesh;
+
+      na_points.Dispose();
+      na_triangles.Dispose();
+      na_vertices.Dispose();
+      na_contour.Dispose();
     }
   }
 
