@@ -111,6 +111,7 @@ public class DelaunayTest : MonoBehaviour
       Glyph glyph = fontCurve.Glyphs[glyphIdx];
       int contourCount = glyph.contours.Length;
       List<float2> points = new List<float2>();
+      List<CDT.ContourPoint> contours = new List<CDT.ContourPoint>();
 
       maxRect = glyph.maxRect;
       minRect = glyph.minRect;
@@ -120,22 +121,21 @@ public class DelaunayTest : MonoBehaviour
         int segmentCount = glyphContour.segments.Length;
 
         for (int s=0; s < segmentCount; s++)
+        {
           points.Add(glyphContour.segments[s].p0);
+          contours.Add(new CDT.ContourPoint(contours.Count, c));
+        }
       }
 
       if (mesh == null) mesh = new Mesh();
       mesh.Clear();
 
-      int[] contours = new int[points.Count];
-      for (int c=0; c < contours.Length; c++)
-        contours[c] = c;
-
       NativeArray<float2> na_points;
       NativeList<int> na_triangles;
-      NativeArray<int> na_contour;
+      NativeArray<CDT.ContourPoint> na_contours;
       JobHandle jobHandle = CDT.ConstraintTriangulate(
-        minRect, maxRect, points.ToArray(), in contours,
-        out na_points, out na_triangles, out na_contour
+        minRect, maxRect, points.ToArray(), contours.ToArray(),
+        out na_points, out na_triangles, out na_contours
       );
       jobHandle.Complete();
 
@@ -150,7 +150,7 @@ public class DelaunayTest : MonoBehaviour
       na_points.Dispose();
       na_triangles.Dispose();
       na_vertices.Dispose();
-      na_contour.Dispose();
+      na_contours.Dispose();
     }
   }
 
@@ -169,7 +169,7 @@ public class DelaunayTest : MonoBehaviour
       Gizmos.DrawLine(transform.position + vertices[triangles[tIdx + 2]], transform.position + vertices[triangles[tIdx]]);
     }
 
-    if (highlightVertex < vertices.Length && highlightVertex > 0)
+    if (highlightVertex < vertices.Length && highlightVertex >= 0)
       Gizmos.DrawSphere(transform.position +  vertices[highlightVertex], 0.02f);
   }
 }
