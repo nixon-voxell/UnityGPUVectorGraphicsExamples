@@ -719,14 +719,14 @@ Mesh:
   m_SubMeshes:
   - serializedVersion: 2
     firstByte: 0
-    indexCount: 15
+    indexCount: 24
     topology: 0
     baseVertex: 0
     firstVertex: 0
-    vertexCount: 7
+    vertexCount: 8
     localAABB:
-      m_Center: {x: 0.2866211, y: 0.32910156, z: 0}
-      m_Extent: {x: 0.26660156, y: 0.23876953, z: 0}
+      m_Center: {x: 0.38867188, y: 0.3125, z: 0}
+      m_Extent: {x: 0.25, y: 0.3125, z: 0}
   m_Shapes:
     vertices: []
     shapes: []
@@ -743,10 +743,10 @@ Mesh:
   m_KeepVertices: 1
   m_KeepIndices: 1
   m_IndexFormat: 0
-  m_IndexBuffer: 060000000100060001000200060002000300060003000400060004000500
+  m_IndexBuffer: 040002000300050000000100050001000200050002000400060003000000060000000500070004000300070003000600
   m_VertexData:
     serializedVersion: 3
-    m_VertexCount: 11
+    m_VertexCount: 12
     m_Channels:
     - stream: 0
       offset: 0
@@ -804,8 +804,8 @@ Mesh:
       offset: 0
       format: 0
       dimension: 0
-    m_DataSize: 264
-    _typelessdata: 00a00d3f0080223e000000000000000000000000000080bf00a00d3f0000b93d000000000000000000000000000080bf0000a43c00c09d3e000000000000000000000000000080bf0000a43c0000b23e000000000000000000000000ffff7fbf00a00d3f0060113f000000000000000000000000000080bf00a00d3f0020003f000000000000000000000000000080bf0000103e0000a83e000000000000000000000000000080bf00ae1fc1008e1ec10000000000000000000000000000000000ae1fc1001629410000000000000000000000000000000000da2841001629410000000000000000000000000000000000da2841008e1ec100000000000000000000000000000000
+    m_DataSize: 288
+    _typelessdata: 0080233f00000000000000000000000000000000000080bf00000e3e00000000000000000000000000000000000080bf00000e3e0000203f000000000000000000000000ffff7fbf0080233f0000203f000000000000000000000000000080bf00001e3e00001c3f000000000000000000000000000080bf00001e3e0000803c000000000000000000000000000080bf00801f3f0000803c000000000000000000000000000080bf00801f3f00001c3f000000000000000000000000000080bf00c81dc1000020c10000000000000000000000000000000000c81dc100002a410000000000000000000000000000000000382a4100002a410000000000000000000000000000000000382a41000020c100000000000000000000000000000000
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0
@@ -859,8 +859,8 @@ Mesh:
       m_BitSize: 0
     m_UVInfo: 0
   m_LocalAABB:
-    m_Center: {x: 0.2866211, y: 0.32910156, z: 0}
-    m_Extent: {x: 10.266602, y: 10.23877, z: 0}
+    m_Center: {x: 0.38867188, y: 0.3125, z: 0}
+    m_Extent: {x: 10.25, y: 10.3125, z: 0}
   m_MeshUsageFlags: 0
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
@@ -986,22 +986,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71973825d82e7b84c842c618b9277a47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fontCurve: {fileID: 309146945155402815, guid: 9640dd3158c9ff141a47f491b30ae702, type: 3}
+  fontCurve: {fileID: 309146945155402815, guid: fd24f8729129048478d5e6c53e909f25, type: 3}
   transforms:
   - {fileID: 842348705}
   - {fileID: 151489322}
   - {fileID: 316805232}
   - {fileID: 1093798710}
   - {fileID: 1830441673}
-  character: 60
+  character: 4607
   fontTest: {fileID: 1788983212}
-  glyphIdx: 31
+  glyphIdx: -1
   maxRect:
-    x: 0.55322266
-    y: 0.5678711
+    x: 0.6386719
+    y: 0.625
   minRect:
-    x: 0.020019531
-    y: 0.09033203
+    x: 0.13867188
+    y: 0
   mesh: {fileID: 953620946}
   meshFilter: {fileID: 1263537783}
   highlightTriangle: 20
@@ -1014,7 +1014,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1263537779}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1233,9 +1233,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07ff018f99574e4d8cd4bc3ac12751e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fontCurve: {fileID: 309146945155402815, guid: 9640dd3158c9ff141a47f491b30ae702, type: 3}
-  text: <
-  debugSize: 0.02
+  fontCurve: {fileID: 309146945155402815, guid: fd24f8729129048478d5e6c53e909f25, type: 3}
+  text: "\u0A8A\u0A8Aasd"
+  debugSize: 0.01
 --- !u!23 &1788983213
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -112,6 +112,8 @@ public class DelaunayTest : MonoBehaviour
     {
       Glyph glyph = fontCurve.Glyphs[glyphIdx];
       int contourCount = glyph.contours.Length;
+      if (contourCount == 0) return;
+
       List<float2> points = new List<float2>();
       List<CDT.ContourPoint> contours = new List<CDT.ContourPoint>();
 
