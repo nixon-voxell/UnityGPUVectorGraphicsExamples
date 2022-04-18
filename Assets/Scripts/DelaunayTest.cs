@@ -12,6 +12,7 @@ public class DelaunayTest : MonoBehaviour
   public FontCurve fontCurve;
   public Transform[] transforms;
   public char character;
+  public FontTest fontTest;
   [InspectOnly] public int glyphIdx;
   public float2 maxRect;
   public float2 minRect;
@@ -92,6 +93,7 @@ public class DelaunayTest : MonoBehaviour
       for (int v=0; v < vertexCount; v++) na_vertices[v] = new float3(na_points[v], 0.0f);
       mesh.SetVertices<float3>(na_vertices);
       mesh.SetIndices<int>(na_triangles, MeshTopology.Triangles, 0);
+      mesh.RecalculateNormals();
 
       meshFilter.sharedMesh = mesh;
 
@@ -115,6 +117,7 @@ public class DelaunayTest : MonoBehaviour
 
       maxRect = glyph.maxRect;
       minRect = glyph.minRect;
+      int contourStart = 0;
       for (int c=0; c < contourCount; c++)
       {
         QuadraticContour glyphContour = glyph.contours[c];
@@ -123,8 +126,10 @@ public class DelaunayTest : MonoBehaviour
         for (int s=0; s < segmentCount; s++)
         {
           points.Add(glyphContour.segments[s].p0);
-          contours.Add(new CDT.ContourPoint(contours.Count, c));
+          contours.Add(new CDT.ContourPoint(contourStart+s, c));
         }
+        contours.Add(new CDT.ContourPoint(contourStart, c));
+        contourStart += segmentCount;
       }
 
       if (mesh == null) mesh = new Mesh();
@@ -144,6 +149,7 @@ public class DelaunayTest : MonoBehaviour
       for (int v=0; v < vertexCount; v++) na_vertices[v] = new float3(na_points[v], 0.0f);
       mesh.SetVertices<float3>(na_vertices);
       mesh.SetIndices<int>(na_triangles, MeshTopology.Triangles, 0);
+      mesh.RecalculateNormals();
 
       meshFilter.sharedMesh = mesh;
 
@@ -152,6 +158,22 @@ public class DelaunayTest : MonoBehaviour
       na_vertices.Dispose();
       na_contours.Dispose();
     }
+  }
+
+  [Button]
+  private void NextCDT()
+  {
+    character = (char)(math.min(char.MaxValue, character + 1));
+    fontTest.text = character.ToString();
+    CDTTest();
+  }
+
+  [Button]
+  private void PrevCDT()
+  {
+    character = (char)(math.max(char.MinValue, character - 1));
+    fontTest.text = character.ToString();
+    CDTTest();
   }
 
   private void OnDrawGizmos()
