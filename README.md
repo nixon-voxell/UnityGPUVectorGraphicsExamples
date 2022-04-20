@@ -1,7 +1,5 @@
 # Unity GPU Vector Graphics Examples
 
-![Simple Bezier Curve](./Packages/voxell.vectorgraphics/Pictures~/simple_bezier_curve.png)
-
 This is an example project showcasing the [UnityGPUVectorGraphics](https://github.com/voxell-tech/UnityGPUVectorGraphics) package. Examples in this package will also be included in the package itself (as samples). However, those examples will only be updated once in a while. If you want the lastest example scenes, grab it here!
 
 ## Installation
