@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: cb96670c11e964043a69e82b4d74aa56
+importerOverride: VX.GPUVectorGraphics.Editor:Voxell.GPUVectorGraphics.Font:FontImporter
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Rock 3D
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

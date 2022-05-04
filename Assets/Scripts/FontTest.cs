@@ -19,7 +19,7 @@ public class FontTest : MonoBehaviour
     for (int c=0; c < _charCount; c++)
     {
       char character = text[c];
-      int glyphIdx = fontCurve.TryGetGlyhIndex(character);
+      int glyphIdx = fontCurve.SearchGlyhIndex(character);
       _glyphIndices[c] = glyphIdx;
     }
   }
@@ -27,6 +27,7 @@ public class FontTest : MonoBehaviour
   private void OnDrawGizmos()
   {
     Start();
+    float enlarge = 10.0f;
     float3 shift = float3.zero;
     Gizmos.color = new Color(0.6f, 0.8f, 1.0f, 0.7f);
     for (int g=0; g < _charCount; g++)
@@ -51,10 +52,10 @@ public class FontTest : MonoBehaviour
             int nextIdx = (s + 1) % segmentCount;
             currSegment = glyphContour.segments[s];
             nextSegment = glyphContour.segments[nextIdx];
-            Gizmos.DrawCube(new float3(glyphContour.segments[s].p0, 0.0f) + shift, new float3(debugSize));
-            Gizmos.DrawSphere(new float3(glyphContour.segments[s].p1, 0.0f) + shift, debugSize*0.5f);
+            Gizmos.DrawCube(new float3(glyphContour.segments[s].p0 * enlarge, 0.0f) + shift, new float3(debugSize));
+            Gizmos.DrawSphere(new float3(glyphContour.segments[s].p1 * enlarge, 0.0f) + shift, debugSize*0.5f);
 
-            Gizmos.DrawLine(new float3(currSegment.p0, 0.0f) + shift, new float3(nextSegment.p0, 0.0f) + shift);
+            Gizmos.DrawLine(new float3(currSegment.p0 * enlarge, 0.0f) + shift, new float3(nextSegment.p0 * enlarge, 0.0f) + shift);
           }
         }
         shift.x += maxRect.x;
