@@ -63,18 +63,20 @@ public class DelaunayTest : MonoBehaviour
     if (fontCurve == null) return;
     // glyphIdx = fontCurve.SearchGlyhIndex(character);
     Glyph glyph = fontCurve.Glyphs[glyphIdx];
+    fontTest.glyphIdx = glyphIdx;
+
     int contourCount = glyph.contours.Length;
     List<float2> points = new List<float2>();
 
-    maxRect = glyph.maxRect * FontCurve.ENLARGE;
-    minRect = glyph.minRect * FontCurve.ENLARGE;
+    maxRect = glyph.maxRect;
+    minRect = glyph.minRect;
     for (int c=0; c < contourCount; c++)
     {
       QuadraticContour glyphContour = glyph.contours[c];
       int segmentCount = glyphContour.segments.Length;
 
       for (int s=0; s < segmentCount; s++)
-        points.Add(glyphContour.segments[s].p0 * FontCurve.ENLARGE);
+        points.Add(glyphContour.segments[s].p0);
     }
 
     if (mesh == null) mesh = new Mesh();
@@ -107,14 +109,16 @@ public class DelaunayTest : MonoBehaviour
     if (fontCurve == null) return;
     // glyphIdx = fontCurve.SearchGlyhIndex(character);
     Glyph glyph = fontCurve.Glyphs[glyphIdx];
+    fontTest.glyphIdx = glyphIdx;
+
     int contourCount = glyph.contours.Length;
     if (contourCount == 0) return;
 
     List<float2> points = new List<float2>();
     List<CDT.ContourPoint> contours = new List<CDT.ContourPoint>();
 
-    maxRect = glyph.maxRect * FontCurve.ENLARGE;
-    minRect = glyph.minRect * FontCurve.ENLARGE;
+    maxRect = glyph.maxRect;
+    minRect = glyph.minRect;
     int contourStart = 0;
     for (int c=0; c < contourCount; c++)
     {
@@ -123,7 +127,7 @@ public class DelaunayTest : MonoBehaviour
 
       for (int s=0; s < segmentCount; s++)
       {
-        points.Add(glyphContour.segments[s].p0 * FontCurve.ENLARGE);
+        points.Add(glyphContour.segments[s].p0);
         contours.Add(new CDT.ContourPoint(contourStart+s, c));
       }
       contours.Add(new CDT.ContourPoint(contourStart, c));
@@ -158,19 +162,37 @@ public class DelaunayTest : MonoBehaviour
   }
 
   [Button]
+  private void NextDT()
+  {
+    SearchCharGlyphIndex(1);
+    DTTest();
+  }
+
+  [Button]
+  private void PrevDT()
+  {
+    SearchCharGlyphIndex(-1);
+    DTTest();
+  }
+
+  [Button]
   private void NextCDT()
   {
-    character = (char)(math.min(char.MaxValue, character + 1));
-    fontTest.text = character.ToString();
+    SearchCharGlyphIndex(1);
     CDTTest();
   }
 
   [Button]
   private void PrevCDT()
   {
-    character = (char)(math.max(char.MinValue, character - 1));
-    fontTest.text = character.ToString();
+    SearchCharGlyphIndex(-1);
     CDTTest();
+  }
+
+  private void SearchCharGlyphIndex(int valueChange)
+  {
+    character = (char)(math.min(char.MaxValue, character + valueChange));
+    glyphIdx = fontCurve.SearchGlyhIndex(character);
   }
 
   private void OnDrawGizmos()
@@ -189,6 +211,6 @@ public class DelaunayTest : MonoBehaviour
     }
 
     if (highlightVertex < vertices.Length && highlightVertex >= 0)
-      Gizmos.DrawSphere(transform.position +  vertices[highlightVertex], debugSize);
+      Gizmos.DrawSphere(transform.position + vertices[highlightVertex], debugSize);
   }
 }
