@@ -9,9 +9,6 @@ public class FontTest : MonoBehaviour
   public float debugSize = 0.05f;
   public int glyphIdx;
 
-  private int[] _glyphIndices;
-  private int _charCount;
-
   private void OnDrawGizmos()
   {
     float3 shift = float3.zero;
